@@ -16,13 +16,12 @@ if (process.env.NODE_ENV == "production") {
   console.log("Production");
   var privateKey = fs.readFileSync("/etc/letsencrypt/live/p2p.bytebook.co/privkey.pem", "utf8");
   var certificate = fs.readFileSync("/etc/letsencrypt/live/p2p.bytebook.co/cert.pem", "utf8");
-  var credentials = { key: privateKey, cert: certificate };
+  var credentials = { hostname: "p2p.bytebook.co", requestCert: true, rejectUnauthorized: false, key: privateKey, cert: certificate };
   server = https.createServer(credentials, app);
 } else {
   console.log("developement");
   server = http.createServer(app);
 }
-const io = require("socket.io")(server, { cors: { origin: "*" } });
 
 app.get("/", (req, res) => {
   res.send("Hello from node0 server");
@@ -35,6 +34,8 @@ const socketToRoom = {};
 server.listen(process.env.PORT || 9000, () => {
   console.log(`Server started on port ${server.address().port}`);
 });
+
+const io = require("socket.io").listen(server);
 
 io.on("connection", (socket) => {
   console.log("socket connected :", socket.id, rooms);
