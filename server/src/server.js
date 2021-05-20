@@ -1,12 +1,24 @@
 const express = require("express");
+const https = require("https");
 const http = require("http");
 const url = require("url");
 const cors = require("cors");
 const app = express();
+const fs = require("fs");
+const app = express();
 
 app.use(cors());
 //initialize a simple http server
-const server = http.createServer(app);
+let server;
+
+if (process.env.NODE_ENV == "production") {
+  var privateKey = fs.readFileSync("/etc/letsencrypt/live/p2p.bytebook.co/privkey.pem", "utf8");
+  var certificate = fs.readFileSync("/etc/letsencrypt/live/p2p.bytebook.co/cert.pem", "utf8");
+  var credentials = { key: privateKey, cert: certificate };
+  server = https.createServer(credentials, app);
+} else {
+  server = http.createServer(app);
+}
 const io = require("socket.io")(server, { cors: { origin: "*" } });
 
 app.get("/", (req, res) => {
