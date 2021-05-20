@@ -373,7 +373,7 @@ function Room(props) {
       <input className={!userAdded ? "room_sendFile" : "room_sendFile buttonDisabled"} disabled={userAdded} type='file' title='Select File' multiple onChange={sendFile} />
       {/* <FileShareDialog /> */}
       <Dialog open={!copyHandler} onClose={handleClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
-        <DialogTitle id='alert-dialog-title'>{"Url"}</DialogTitle>
+        <DialogTitle id='alert-dialog-title'>{"Clipboard"}</DialogTitle>
         <DialogContent>
           <DialogContentText id='alert-dialog-description'>Url copied to your clipboard. Share this with peer to start sharing</DialogContentText>
         </DialogContent>
