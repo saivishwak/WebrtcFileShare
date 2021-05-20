@@ -5,7 +5,6 @@ const url = require("url");
 const cors = require("cors");
 const app = express();
 const fs = require("fs");
-const app = express();
 
 app.use(cors());
 //initialize a simple http server
