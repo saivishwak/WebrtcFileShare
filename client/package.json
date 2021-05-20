@@ -26,6 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:production":"APP_ENV=production npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint ./src/",

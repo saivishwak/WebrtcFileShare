@@ -56,7 +56,9 @@ function Room(props) {
   const [copyHandler, setcopyhandler] = useState(true);
 
   useEffect(async () => {
-    socketRef.current = io.connect("http://localhost:5000");
+    const socketUrl = process.env.APP_ENV == "production" ? "https://p2p.bytebook.co/ws" : "http://localhost:9000";
+    console.log("Socket URL : ", socketUrl);
+    socketRef.current = io.connect(socketUrl);
     socketRef.current.emit("join room", {
       userName: user.userName,
       roomID: roomId,
@@ -110,6 +112,16 @@ function Room(props) {
       roomArr.current = roomItem.roomData;
     }
   }, []);
+
+  useEffect(() => {
+    return () => {
+      console.log("componentWillUnmount");
+      if (socketRef.current) {
+        socketRef.current.close();
+      }
+    };
+  }, []);
+
   useEffect(() => {
     console.log(peers);
     if (peers.length == 1) {
