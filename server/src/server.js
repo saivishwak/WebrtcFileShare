@@ -35,7 +35,7 @@ server.listen(process.env.PORT || 9000, () => {
   console.log(`Server started on port ${server.address().port}`);
 });
 
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, { cors: { origin: "*" } });
 
 io.on("connection", (socket) => {
   console.log("socket connected :", socket.id, rooms);
