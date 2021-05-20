@@ -5,6 +5,8 @@ const url = require("url");
 const cors = require("cors");
 const app = express();
 const fs = require("fs");
+const dotenv = require("dotenv");
+dotenv.config();
 
 app.use(cors());
 //initialize a simple http server
