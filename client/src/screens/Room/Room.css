@@ -1,0 +1,158 @@
+.room {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 20px 30px;
+  color: white;
+}
+
+.roomTopContainer {
+  flex: 0.1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.roomTopContainer box-icon {
+  cursor: pointer;
+}
+
+.roomBottomContainer {
+  flex: 0.9;
+  margin-top: 30px;
+}
+
+.roomTopContainer {
+  color: #c5c7cc;
+}
+
+.MuiTable-root {
+  background-color: #111726;
+}
+
+.MuiTableCell-body {
+  color: #39e8b1c0 !important;
+}
+
+.MuiTableCell-head {
+  color: #39e8b0 !important;
+}
+
+.MuiTableCell-root {
+  border-bottom: 1px solid #aaaaaa5e !important;
+  font-family: inherit !important;
+}
+
+.MuiPaper-rounded {
+  border-radius: 0px !important;
+}
+
+.roomTalbeDelete {
+  cursor: pointer;
+}
+
+.MuiTableCell-body:hover {
+  color: #a6fadf !important;
+  transition: 200ms ease;
+}
+
+.roomBottomContainerNoData {
+  margin-top: -0.5%;
+  color: #636979;
+  text-align: center;
+}
+
+.roomMiddleContainer {
+  color: #c5c7cc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.roomMiddleContainerEach {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+  align-items: center;
+}
+
+.roomMiddleContainerAvatars {
+  color: #c5c7cc;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+.filesTransferProgress p {
+  color: #636979;
+}
+.MuiAvatar-root {
+  background-color: #0d1322 !important;
+  width: 60px !important;
+  height: 60px !important;
+  border: 1px solid #39e8b0;
+  box-shadow: 0 1px 20px #39e8b157;
+}
+
+.room_sendFile {
+  color: transparent;
+}
+.room_sendFile::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.room_sendFile::-moz-file-upload-button {
+  visibility: hidden;
+}
+
+.room_sendFile::before {
+  content: "Share Files";
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  cursor: pointer;
+  font-weight: 700;
+  position: fixed;
+  bottom: 30px;
+  right: 40px;
+  font-size: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #39e8b0;
+  color: #0d1322;
+  border: none;
+  border-radius: 30px;
+  padding: 15px;
+}
+.room_sendFile:hover::before {
+  background-color: #39e8b0;
+  box-shadow: 0 1px 20px #39e8b157;
+}
+.room_sendFile:active {
+  outline: 0;
+}
+
+.file-progress svg {
+  transform: rotateZ(-90deg) scaleY(-1);
+}
+
+.file-progress circle {
+  stroke: #3be8b0;
+  stroke-width: 2px;
+  stroke-dasharray: 69;
+  fill: #0b101c;
+}
+
+.buttonDisabled::before {
+  background-color: #7c7c7c;
+}
+
+.buttonDisabled:hover::before {
+  background-color: #7c7c7c;
+  box-shadow: 0 0px 00px #39e8b157;
+}

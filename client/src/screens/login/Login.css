@@ -1,0 +1,155 @@
+.login {
+  color: rgb(255, 255, 255);
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -50px;
+}
+.loginContainer img {
+  margin-bottom: 10px;
+}
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  padding: 20px 20px;
+  border-radius: 20px;
+  font-size: large;
+  max-width: 400px;
+  align-items: center;
+}
+
+.loginContainer__input {
+  font-size: 18px;
+  padding: 10px 5px;
+  outline: none;
+  border: 1px solid #39e8b0;
+  border-radius: 5px;
+  margin-top: 20px;
+  color: white;
+  background: transparent;
+  outline: none;
+}
+.loginContainer__input[type="text"]:focus {
+  outline: none;
+  border: 1px solid #39e8b0;
+  box-shadow: 0px 0px 14px #39e8b157;
+  -moz-box-shadow: 0px 0px 14px #39e8b157;
+  -webkit-box-shadow: 0px 0px 14px #39e8b157;
+  transition: 200ms ease-in;
+}
+
+.loginContainer_bottom {
+  margin-top: 15px;
+  font-size: small;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.loginContainer_bottom p {
+  margin-top: 10px;
+}
+.signinButton {
+  border-radius: 5px;
+  padding: 10px 10px;
+  margin-top: 15px;
+  outline: none;
+  border: none;
+  background-color: #39e8b0;
+  color: #0d1322;
+  cursor: pointer;
+  font-size: 16px;
+  width: 200px;
+  font-size: 20px;
+}
+.signinButton:hover {
+  background-color: #39e8b0;
+  box-shadow: 0 1px 20px #39e8b157;
+  transition: 200ms ease;
+}
+
+.logologin {
+  width: 200px !important;
+  object-fit: contain;
+}
+
+.login__footer {
+  position: fixed;
+  bottom: 0px;
+  color: rgb(153, 153, 153);
+  padding: 20px 20px;
+  text-align: center;
+}
+
+.typewriter h1 {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: 1px solid #39e8b0; /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto;
+  letter-spacing: 0.15em; /* Adjust as needed */
+  animation: typing 2.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  margin-bottom: 10px;
+}
+
+.textFadeIn {
+  animation: fade 2s steps(60, end);
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #39e8b0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .login h1,
+  span h2,
+  h3,
+  h4,
+  a {
+    font-size: large;
+  }
+  .login p {
+    font-size: small;
+  }
+  .typeweritter__span {
+    font-size: small !important;
+  }
+  .loginContainer__input {
+    font-size: 15px;
+  }
+  .signinButton {
+    font-size: 12px;
+  }
+}

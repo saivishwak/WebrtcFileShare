@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Roboto+Mono:wght@700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  font-family: "Roboto Mono", monospace;
+  background-color: #111726;
+  overflow-x: hidden;
+  background-image: url("./assets/images/noise.png");
+  background-size: 13%;
+}

@@ -1,0 +1,45 @@
+.home {
+  color: #c5c7cc;
+  height: 100vh;
+  padding: 40px 20px;
+}
+
+.home > h1 {
+  font-size: 30px;
+}
+
+.homeContainer__rooms {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.home_CreatButton {
+  position: fixed;
+  bottom: 30px;
+  right: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  outline: none;
+  background-color: #39e8b0;
+  color: #0d1322;
+  border: none;
+  border-radius: 30px;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.home_CreatButton:hover {
+  background-color: #39e8b0;
+  box-shadow: 0 1px 20px #39e8b157;
+  transition: 200ms ease;
+}
+
+.homeContainer__roomsEmpty {
+  display: grid;
+  place-items: center;
+  margin-top: 20px;
+  color: #c5c7cc79;
+}

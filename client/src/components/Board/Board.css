@@ -1,0 +1,60 @@
+.board {
+  border: 1px solid rgba(99, 105, 121, 0.6);
+  border-radius: 4px;
+  box-shadow: 0 8px 35px rgb(0 0 0 / 40%);
+  background-color: #0d1322;
+  min-height: 120px;
+  min-width: 200px;
+  padding: 10px 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 20px;
+  margin-top: 20px;
+}
+.board:hover {
+  border: 1px solid #39e8b169;
+  box-shadow: 0px 0px 14px #39e8b157;
+  -moz-box-shadow: 0px 0px 14px #39e8b157;
+  -webkit-box-shadow: 0px 0px 14px #39e8b157;
+}
+
+.board > h3 {
+  margin-bottom: 5px;
+  font-size: 22px;
+}
+.boardTop {
+  display: flex;
+  flex-direction: column;
+}
+
+.board_Close {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #666666;
+}
+
+.board_Close > svg {
+  float: right;
+}
+
+.board_CloseIcon {
+  pointer-events: none;
+  outline: none;
+  border: none;
+}
+.board_Close:hover {
+  color: white;
+  transition: 200ms ease;
+}
+
+.boardBotton {
+  flex: 1;
+}
+
+.boardBotton > h3 {
+  margin-top: 40px;
+}
