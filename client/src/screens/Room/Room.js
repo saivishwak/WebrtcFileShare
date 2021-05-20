@@ -56,7 +56,7 @@ function Room(props) {
   const [copyHandler, setcopyhandler] = useState(true);
 
   useEffect(async () => {
-    const socketUrl = process.env.APP_ENV == "production" ? "https://p2p.bytebook.co/ws" : "http://localhost:9000";
+    const socketUrl = "https://p2p.bytebook.co/ws";
     console.log("Socket URL : ", socketUrl);
     socketRef.current = io.connect(socketUrl);
     socketRef.current.emit("join room", {
