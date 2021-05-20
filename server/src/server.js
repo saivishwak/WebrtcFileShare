@@ -11,11 +11,13 @@ app.use(cors());
 let server;
 
 if (process.env.NODE_ENV == "production") {
+  console.log("Production");
   var privateKey = fs.readFileSync("/etc/letsencrypt/live/p2p.bytebook.co/privkey.pem", "utf8");
   var certificate = fs.readFileSync("/etc/letsencrypt/live/p2p.bytebook.co/cert.pem", "utf8");
   var credentials = { key: privateKey, cert: certificate };
   server = https.createServer(credentials, app);
 } else {
+  console.log("developement");
   server = http.createServer(app);
 }
 const io = require("socket.io")(server, { cors: { origin: "*" } });
