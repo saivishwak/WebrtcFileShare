@@ -30,11 +30,6 @@ app.get("/", (req, res) => {
 const rooms = {};
 const socketToRoom = {};
 
-//start our server
-server.listen(process.env.PORT || 443, () => {
-  console.log(`Server started on port ${server.address().port}`);
-});
-
 const io = require("socket.io")(server, { cors: { origin: "*" } });
 
 io.on("connection", (socket) => {
@@ -98,4 +93,9 @@ io.on("connection", (socket) => {
       socket.broadcast.emit("user left", socket.id);
     }
   });
+});
+
+//start our server
+server.listen(process.env.PORT || 443, () => {
+  console.log(`Server started on port ${server.address().port}`);
 });
