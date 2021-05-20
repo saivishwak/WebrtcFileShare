@@ -8,7 +8,7 @@ const fs = require("fs");
 const dotenv = require("dotenv");
 dotenv.config();
 
-app.use(cors());
+// app.use(cors());
 //initialize a simple http server
 let server;
 
@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 const rooms = {};
 const socketToRoom = {};
 
-const io = require("socket.io")(server, { cors: { origin: "*" } });
+const io = require("socket.io")(server);
 
 io.on("connection", (socket) => {
   console.log("socket connected :", socket.id, rooms);
