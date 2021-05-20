@@ -7,6 +7,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import SplashScreen from "../../components/SplashScreen/SplashScreen";
 
 function Login() {
   const [userName, setUserName] = useState("");
@@ -36,6 +37,7 @@ function Login() {
   };
   return (
     <div className='login'>
+      {!Auth.auth ? <SplashScreen /> : ""}
       <div className='loginContainer'>
         {/* <img className='logologin' src='./logo.svg' alt='ByteBook Logo' /> */}
         <div className='typewriter'>

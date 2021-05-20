@@ -56,7 +56,7 @@ function Room(props) {
   const [copyHandler, setcopyhandler] = useState(true);
 
   useEffect(async () => {
-    const socketUrl = "wss://p2p.bytebook.co:443";
+    const socketUrl = "wss://p2p.bytebook.co:9000";
     console.log("Socket URL : ", socketUrl);
     socketRef.current = io.connect(socketUrl);
     socketRef.current.emit("join room", {

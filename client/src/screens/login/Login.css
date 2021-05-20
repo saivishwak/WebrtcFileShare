@@ -94,10 +94,12 @@
   letter-spacing: 0.15em; /* Adjust as needed */
   animation: typing 2.5s steps(40, end), blink-caret 0.75s step-end infinite;
   margin-bottom: 10px;
+  animation-delay: 1s;
 }
 
 .textFadeIn {
   animation: fade 2s steps(60, end);
+  animation-delay: 1s;
 }
 
 @keyframes fade {
