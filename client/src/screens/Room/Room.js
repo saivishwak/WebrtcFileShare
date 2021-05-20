@@ -58,7 +58,7 @@ function Room(props) {
   useEffect(async () => {
     const socketUrl = process.env.APP_ENV == "production" ? "https://p2p.bytebook.co/ws" : "http://localhost:9000";
     console.log("Socket URL : ", socketUrl);
-    socketRef.current = io.connect("https://p2p.bytebook.co/ws");
+    socketRef.current = io.connect(socketUrl);
     socketRef.current.emit("join room", {
       userName: user.userName,
       roomID: roomId,
