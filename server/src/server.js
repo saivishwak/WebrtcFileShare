@@ -96,6 +96,6 @@ io.on("connection", (socket) => {
 });
 
 //start our server
-server.listen(process.env.PORT || 443, () => {
+server.listen(process.env.PORT || 9000, () => {
   console.log(`Server started on port ${server.address().port}`);
 });
