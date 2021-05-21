@@ -244,11 +244,8 @@ function Room(props) {
       worker.addEventListener("message", (event) => {
         if (event.data == "Done") {
           sendChannel.current.send(`Done-${JSON.stringify(metaObj)}`);
-          setCurrentFile((prev) => [...prev, metaObj]);
-          const DataArr = roomData.filter((data) => data.id !== metaObj.id);
-          DataArr.push({ id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Sent" });
-          setRoomData((prev) => DataArr);
           roomArr.current.push({ id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Sent" });
+          setRoomData((prev) => roomArr.current);
           db.rooms.update({ roomId: roomId }, { roomData: roomArr.current });
           worker.terminate();
           return;
@@ -265,8 +262,8 @@ function Room(props) {
           if (sendChannel.current.readyState == "open") {
             sendChannel.current.send(event.data);
           } else {
-            worker.postMessage("error");
-            return alert("something went wrong");
+            worker.terminate();
+            return window.location.reload();
           }
         }
       });
@@ -281,11 +278,9 @@ function Room(props) {
       console.log("file", file, "meta", metaData.current);
       download(file, metaData.current.name, metaData.current.type);
       const metaObj = metaData.current;
-      const DataArr = roomData.filter((data) => data.id !== metaObj.id);
-      DataArr.push({ id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Received" });
-      setRoomData((prev) => DataArr);
       roomArr.current.push({ id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Received" });
       db.rooms.update({ roomId: roomId }, { roomData: roomArr.current });
+      setRoomData((prev) => roomArr.current);
       // setRoomData((prev) => [...prev, { id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Received" }]);
       // roomArr.current.push({ id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Received" });
       // db.rooms.update({ roomId: roomId }, { roomData: roomArr.current });
@@ -372,6 +367,7 @@ function Room(props) {
                           roomData: newItems,
                         });
                         setRoomData((arr) => newItems);
+                        roomArr.current = newItems;
                       }}
                     />
                   </TableCell>

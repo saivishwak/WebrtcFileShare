@@ -4,7 +4,7 @@ import uuid from "uuid";
 self.addEventListener("message", processFiles);
 
 function processFiles(event) {
-  if (event.data != "error") {
+  if (event.data !== "error") {
     const { files } = event.data;
     for (let i = 0; i < files.length; i++) {
       const dataId = uuid.v4();
