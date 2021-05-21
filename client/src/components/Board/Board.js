@@ -6,7 +6,7 @@ function Board(props) {
   return (
     <div className='board'>
       <div className='boardTop'>
-        <div style={{ flex: 1 }}></div>
+        {/* <div style={{ flex: 1 }}></div> */}
         <button value={props.id} className='board_Close' aria-label='delete' onClick={props.onClose}>
           <CloseIcon className='board_CloseIcon' />
         </button>

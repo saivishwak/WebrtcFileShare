@@ -22,6 +22,7 @@ function Home() {
   // }, []);
 
   const addItemToDb = async (event) => {
+    if (roomName.length == 0) return;
     event.preventDefault();
     await db.rooms.add({
       roomId: uuid.v4(),

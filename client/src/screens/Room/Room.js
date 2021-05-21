@@ -1,6 +1,21 @@
 import React, { useRef, useEffect, useContext, useState } from "react";
 import authApi from "../../context/index";
 import { useParams, Link } from "react-router-dom";
+import "./Room.css";
+import db from "../../components/store/useIndexDB";
+
+//Library imports
+import io from "socket.io-client";
+import uuid from "uuid";
+import copy from "copy-to-clipboard";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import download from "downloadjs";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { Avatar } from "@material-ui/core";
+import SplashScreen from "../../components/SplashScreen/SplashScreen";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -9,23 +24,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import "./Room.css";
 import "boxicons";
-import db from "../../components/store/useIndexDB";
-import download from "downloadjs";
-import DeleteIcon from "@material-ui/icons/Delete";
-import AddIcon from "@material-ui/icons/Add";
-import { Avatar } from "@material-ui/core";
-import SplashScreen from "../../components/SplashScreen/SplashScreen";
-import uuid from "uuid";
-import copy from "copy-to-clipboard";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-
-//Library imports
-import io from "socket.io-client";
 
 const useStyles = makeStyles({
   table: {
@@ -142,12 +141,12 @@ function Room(props) {
     const peer = new RTCPeerConnection({
       iceServers: [
         {
-          urls: "stun:stun.stunprotocol.org",
+          urls: "stun:stun.l.google.com:19302",
         },
         {
           urls: "turn:numb.viagenie.ca",
-          credential: "muazkh",
-          username: "webrtc@live.com",
+          credential: "test1234",
+          username: "saivishwak40@gmail.com",
         },
       ],
     });
@@ -238,11 +237,13 @@ function Room(props) {
     try {
       let file = e.target.files;
       console.log("Files Length", file.length);
-
       for (var i = 0; i < file.length; i++) {
         console.log("file", file[i]);
-        const metaData = JSON.stringify({ name: file[i].name, type: file[i].type, size: file[i].size });
+        const dataId = uuid.v4();
+        const metaData = JSON.stringify({ id: dataId, name: file[i].name, type: file[i].type, size: file[i].size });
+        const metaObj = JSON.parse(metaData);
         console.log(metaData);
+        setRoomData((prev) => [...prev, { id: dataId, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Sending" }]);
         file[i].arrayBuffer().then((buffer) => {
           sendChannel.current.send(`Meta-${metaData}`);
           while (buffer.byteLength) {
@@ -252,9 +253,10 @@ function Room(props) {
           }
           sendChannel.current.send(`Done-${metaData}`);
           setCurrentFile((prev) => [...prev, JSON.parse(metaData)]);
-          const metaObj = JSON.parse(metaData);
-          setRoomData((prev) => [...prev, { id: uuid.v4(), fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "sent" }]);
-          roomArr.current.push({ id: uuid.v4(), fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "sent" });
+          const DataArr = roomData.filter((data) => data.id !== dataId);
+          DataArr.push({ id: dataId, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Sent" });
+          setRoomData((prev) => DataArr);
+          roomArr.current.push({ id: dataId, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Sent" });
           db.rooms.update({ roomId: roomId }, { roomData: roomArr.current });
         });
       }
@@ -269,8 +271,8 @@ function Room(props) {
       console.log("file", file, "meta", metaData.current);
       download(file, metaData.current.name, metaData.current.type);
       const metaObj = metaData.current;
-      setRoomData((prev) => [...prev, { id: uuid.v4(), fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "received" }]);
-      roomArr.current.push({ id: uuid.v4(), fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "received" });
+      setRoomData((prev) => [...prev, { id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Received" }]);
+      roomArr.current.push({ id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Received" });
       db.rooms.update({ roomId: roomId }, { roomData: roomArr.current });
       metaData.current = {};
       receiveBuffer.current = [];
@@ -304,8 +306,6 @@ function Room(props) {
     </div>
   ));
 
-  const currentFileItem = currentFile.map(({ name, size }) => <p>{name}</p>);
-
   return (
     <div className='room'>
       <SplashScreen />
@@ -322,16 +322,8 @@ function Room(props) {
       <div className='roomMiddleContainer'>
         <div className='roomMiddleContainerAvatars'>{avatarItem}</div>
         {peers.length > 1 ? "" : <p>No one is in the room. Share your url to start</p>}
-        {/* <div className='filesTransferProgress'>{currentFile.length > 0 && currentFileItem}</div> */}
       </div>
       <div className='roomBottomContainer'>
-        {/* {roomData.length == 0 ? (
-          <div className='roomBottomContainerNoData'>
-            <p>You dont have any data to disply 🙁</p>
-          </div>
-        ) : (
-          ""
-        )} */}
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label='table'>
             <TableHead>
@@ -340,7 +332,7 @@ function Room(props) {
                 <TableCell align='right'>ID</TableCell>
                 <TableCell align='right'>File Name</TableCell>
                 <TableCell align='right'>File Size</TableCell>
-                <TableCell align='right'>Operation</TableCell>
+                <TableCell align='right'>Status</TableCell>
                 <TableCell align='right'>Delete</TableCell>
               </TableRow>
             </TableHead>
@@ -348,7 +340,7 @@ function Room(props) {
               {roomData.map((row, index) => (
                 <TableRow key={index}>
                   <TableCell component='th' scope='row'>
-                    {index}
+                    {index + 1}
                   </TableCell>
                   <TableCell align='right'>{row.id}</TableCell>
                   <TableCell align='right'>{row.fileName}</TableCell>
@@ -372,8 +364,8 @@ function Room(props) {
           </Table>
         </TableContainer>
       </div>
-
-      <input className={!userAdded ? "room_sendFile" : "room_sendFile buttonDisabled"} disabled={userAdded} type='file' title='Select File' multiple onChange={sendFile} />
+      {/* Add multiple to the input select multiple files  */}
+      <input className={!userAdded ? "room_sendFile" : "room_sendFile buttonDisabled"} disabled={userAdded} type='file' title='Select File' onChange={sendFile} />
 
       {/* <FileShareDialog /> */}
       <Dialog open={!copyHandler} onClose={handleClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>

@@ -4,7 +4,6 @@
   box-shadow: 0 8px 35px rgb(0 0 0 / 40%);
   background-color: #0d1322;
   min-height: 120px;
-  min-width: 200px;
   padding: 10px 10px;
   cursor: pointer;
   display: flex;
@@ -12,6 +11,7 @@
   justify-content: space-between;
   margin-right: 20px;
   margin-top: 20px;
+  width: 100%;
 }
 .board:hover {
   border: 1px solid #39e8b169;
@@ -57,4 +57,10 @@
 
 .boardBotton > h3 {
   margin-top: 40px;
+}
+
+@media screen and (min-width: 768px) {
+  .board {
+    max-width: 250px;
+  }
 }

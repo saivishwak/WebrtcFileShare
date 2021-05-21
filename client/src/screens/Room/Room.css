@@ -21,6 +21,7 @@
 .roomBottomContainer {
   flex: 0.9;
   margin-top: 30px;
+  overflow-y: scroll;
 }
 
 .roomTopContainer {
@@ -72,6 +73,10 @@
   padding: 20px;
   text-align: center;
 }
+.roomMiddleContainer > p {
+  margin-bottom: 20px;
+}
+
 .roomMiddleContainerEach {
   display: flex;
   flex-direction: column;

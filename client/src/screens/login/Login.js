@@ -21,7 +21,7 @@ function Login() {
       localStorage.setItem(
         "user",
         JSON.stringify({
-          userName: userName,
+          userName: userName.trim(),
           avatarSeed: Math.random(),
         })
       );
@@ -29,7 +29,6 @@ function Login() {
       history.push("/");
     } else {
       setDialogBool(true);
-      //alert("Name cannot be empty");
     }
   };
   const handleClose = () => {
@@ -55,7 +54,7 @@ function Login() {
             <p style={{ marginLeft: "10px" }}>Enter your name to get started</p>
           </div>
 
-          <input className='loginContainer__input' onChange={(e) => setUserName(e.target.value)} placeholder='Username' type='text' value={userName} maxLength='50' style={{ width: "100%" }}></input>
+          <input autoFocus className='loginContainer__input' onChange={(e) => setUserName(e.target.value)} placeholder='Username' type='text' value={userName} maxLength='50' style={{ width: "100%" }}></input>
           <div className='loginContainer_bottom'>
             <button className='signinButton' onClick={signIn}>
               Get Started

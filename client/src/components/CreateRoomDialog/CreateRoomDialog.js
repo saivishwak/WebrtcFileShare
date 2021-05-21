@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./CreateRoomDialog.css";
 import CloseIcon from "@material-ui/icons/Close";
-import { useHistory } from "react-router-dom";
 
 function CreateRoomDialog(props) {
   if (props.bool) {
     return (
       <div className='createRoomDialog'>
-        <div className='createRoomDialog__container'>
+        <form className='createRoomDialog__container' onSubmit={props.createRoom}>
           <CloseIcon onClick={props.onClose} className='createRoomDialog__close' />
-          <input placeholder='Room name' maxLength='20' value={props.roomName} onChange={(e) => props.setRoomName(e.target.value)}></input>
-          <button onClick={props.createRoom}>Create Room</button>
+          <input autoFocus placeholder='Room name' required maxLength='20' value={props.roomName} onChange={(e) => props.setRoomName(e.target.value)}></input>
+          <button type='submit' onClick={props.createRoom}>
+            Create Room
+          </button>
           <p>Last step to share your files!</p>
-        </div>
+        </form>
       </div>
     );
   } else {
