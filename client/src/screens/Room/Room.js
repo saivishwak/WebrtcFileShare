@@ -25,6 +25,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import "boxicons";
+import Worker from "../../utils/web.worker";
 
 const useStyles = makeStyles({
   table: {
@@ -233,36 +234,42 @@ function Room(props) {
   }
 
   function sendFile(e) {
-    //setFile((prev) => e.target.files);
     try {
-      let file = e.target.files;
-      console.log("Files Length", file.length);
-      for (var i = 0; i < file.length; i++) {
-        console.log("file", file[i]);
-        if (file[i].size > 20 * 1024 * 1024) {
-          return alert("File size limit exceeded. Limit is 100 mb");
-        }
-        const dataId = uuid.v4();
-        const metaData = JSON.stringify({ id: dataId, name: file[i].name, type: file[i].type, size: file[i].size });
-        const metaObj = JSON.parse(metaData);
-        console.log(metaData);
-        setRoomData((prev) => [...prev, { id: dataId, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Sending" }]);
-        file[i].arrayBuffer().then((buffer) => {
-          sendChannel.current.send(`Meta-${metaData}`);
-          while (buffer.byteLength) {
-            const chunk = buffer.slice(0, 16 * 1024);
-            buffer = buffer.slice(16 * 1024, buffer.byteLength);
-            sendChannel.current.send(chunk);
-          }
-          sendChannel.current.send(`Done-${metaData}`);
-          setCurrentFile((prev) => [...prev, JSON.parse(metaData)]);
-          const DataArr = roomData.filter((data) => data.id !== dataId);
-          DataArr.push({ id: dataId, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Sent" });
+      let files = e.target.files;
+      let metaObj;
+      const worker = new Worker();
+      worker.postMessage({
+        files: files,
+      });
+      worker.addEventListener("message", (event) => {
+        if (event.data == "Done") {
+          sendChannel.current.send(`Done-${JSON.stringify(metaObj)}`);
+          setCurrentFile((prev) => [...prev, metaObj]);
+          const DataArr = roomData.filter((data) => data.id !== metaObj.id);
+          DataArr.push({ id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Sent" });
           setRoomData((prev) => DataArr);
-          roomArr.current.push({ id: dataId, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Sent" });
+          roomArr.current.push({ id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Sent" });
           db.rooms.update({ roomId: roomId }, { roomData: roomArr.current });
-        });
-      }
+          worker.terminate();
+          return;
+        }
+        if (typeof event.data == "string") {
+          if (event.data.includes("Meta-")) {
+            metaObj = JSON.parse(event.data.substring(5, event.data.length));
+            setRoomData((prev) => [...prev, { id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Sending" }]);
+            sendChannel.current.send(`Meta-${event.data.substring(5, event.data.length)}`);
+          }
+          console.log(event.data);
+        } else {
+          // sendChannel.current.readyState
+          if (sendChannel.current.readyState == "open") {
+            sendChannel.current.send(event.data);
+          } else {
+            worker.postMessage("error");
+            return alert("something went wrong");
+          }
+        }
+      });
     } catch (err) {
       console.log(err);
     }
@@ -274,14 +281,20 @@ function Room(props) {
       console.log("file", file, "meta", metaData.current);
       download(file, metaData.current.name, metaData.current.type);
       const metaObj = metaData.current;
-      setRoomData((prev) => [...prev, { id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Received" }]);
+      const DataArr = roomData.filter((data) => data.id !== metaObj.id);
+      DataArr.push({ id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Received" });
+      setRoomData((prev) => DataArr);
       roomArr.current.push({ id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Received" });
       db.rooms.update({ roomId: roomId }, { roomData: roomArr.current });
+      // setRoomData((prev) => [...prev, { id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Received" }]);
+      // roomArr.current.push({ id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Received" });
+      // db.rooms.update({ roomId: roomId }, { roomData: roomArr.current });
       metaData.current = {};
       receiveBuffer.current = [];
       //setURL(() => URL.createObjectURL(file));
     } else if (e.data.toString().substring(0, 4) == "Meta") {
       metaData.current = JSON.parse(e.data.toString().substring(5, e.data.toString().length));
+      setRoomData((prev) => [...prev, { id: metaData.current.id, fileName: metaData.current.name, fileSize: formatBytes(metaData.current.size), operation: "Receiving" }]);
       console.log(metaData.current, "meta");
     } else {
       console.log("recieving data");
