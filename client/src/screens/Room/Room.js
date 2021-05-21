@@ -14,7 +14,7 @@ import "boxicons";
 import db from "../../components/store/useIndexDB";
 import download from "downloadjs";
 import DeleteIcon from "@material-ui/icons/Delete";
-import ShareIcon from "@material-ui/icons/Share";
+import AddIcon from "@material-ui/icons/Add";
 import { Avatar } from "@material-ui/core";
 import SplashScreen from "../../components/SplashScreen/SplashScreen";
 import uuid from "uuid";
@@ -321,56 +321,60 @@ function Room(props) {
       </div>
       <div className='roomMiddleContainer'>
         <div className='roomMiddleContainerAvatars'>{avatarItem}</div>
+        {peers.length > 1 ? "" : <p>No one is in the room. Share your url to start</p>}
         {/* <div className='filesTransferProgress'>{currentFile.length > 0 && currentFileItem}</div> */}
       </div>
       <div className='roomBottomContainer'>
-        {roomData.length > 0 ? (
-          <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label='table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell>#</TableCell>
-                  <TableCell align='right'>ID</TableCell>
-                  <TableCell align='right'>File Name</TableCell>
-                  <TableCell align='right'>File Size</TableCell>
-                  <TableCell align='right'>Operation</TableCell>
-                  <TableCell align='right'>Delete</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {roomData.map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell component='th' scope='row'>
-                      {index}
-                    </TableCell>
-                    <TableCell align='right'>{row.id}</TableCell>
-                    <TableCell align='right'>{row.fileName}</TableCell>
-                    <TableCell align='right'>{row.fileSize}</TableCell>
-                    <TableCell align='right'>{row.operation}</TableCell>
-                    <TableCell align='right'>
-                      <DeleteIcon
-                        className='roomTalbeDelete'
-                        onClick={(e) => {
-                          const newItems = roomData.filter((data) => data.id != row.id);
-                          db.rooms.update(roomId, {
-                            roomData: newItems,
-                          });
-                          setRoomData((arr) => newItems);
-                        }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        ) : (
+        {/* {roomData.length == 0 ? (
           <div className='roomBottomContainerNoData'>
             <p>You dont have any data to disply 🙁</p>
           </div>
-        )}
+        ) : (
+          ""
+        )} */}
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label='table'>
+            <TableHead>
+              <TableRow>
+                <TableCell>#</TableCell>
+                <TableCell align='right'>ID</TableCell>
+                <TableCell align='right'>File Name</TableCell>
+                <TableCell align='right'>File Size</TableCell>
+                <TableCell align='right'>Operation</TableCell>
+                <TableCell align='right'>Delete</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {roomData.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell component='th' scope='row'>
+                    {index}
+                  </TableCell>
+                  <TableCell align='right'>{row.id}</TableCell>
+                  <TableCell align='right'>{row.fileName}</TableCell>
+                  <TableCell align='right'>{row.fileSize}</TableCell>
+                  <TableCell align='right'>{row.operation}</TableCell>
+                  <TableCell align='right'>
+                    <DeleteIcon
+                      className='roomTalbeDelete'
+                      onClick={(e) => {
+                        const newItems = roomData.filter((data) => data.id != row.id);
+                        db.rooms.update(roomId, {
+                          roomData: newItems,
+                        });
+                        setRoomData((arr) => newItems);
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
+
       <input className={!userAdded ? "room_sendFile" : "room_sendFile buttonDisabled"} disabled={userAdded} type='file' title='Select File' multiple onChange={sendFile} />
+
       {/* <FileShareDialog /> */}
       <Dialog open={!copyHandler} onClose={handleClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
         <DialogTitle id='alert-dialog-title'>{"Clipboard"}</DialogTitle>

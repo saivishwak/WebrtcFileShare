@@ -19,7 +19,6 @@
   justify-content: space-between;
   padding: 20px 20px;
   background-color: #0d1322;
-  min-width: 400px;
   border-radius: 5px;
   align-items: center;
   color: rgb(148, 148, 148);
@@ -78,4 +77,10 @@
 .createRoomDialog__close:hover {
   fill: white !important;
   transition: 200ms ease;
+}
+
+@media screen and (min-width: 768px) {
+  .createRoomDialog__container {
+    min-width: 400px;
+  }
 }

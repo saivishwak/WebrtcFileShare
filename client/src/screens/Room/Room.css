@@ -58,7 +58,7 @@
 }
 
 .roomBottomContainerNoData {
-  margin-top: -0.5%;
+  margin-bottom: 20px;
   color: #636979;
   text-align: center;
 }
@@ -70,6 +70,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
+  text-align: center;
 }
 .roomMiddleContainerEach {
   display: flex;
@@ -117,7 +118,7 @@
   font-weight: 700;
   position: fixed;
   bottom: 30px;
-  right: 40px;
+  right: 10px;
   font-size: 15px;
   display: flex;
   flex-direction: row;
@@ -155,4 +156,10 @@
 .buttonDisabled:hover::before {
   background-color: #7c7c7c;
   box-shadow: 0 0px 00px #39e8b157;
+}
+
+@media screen and (min-width: 768px) {
+  .room_sendFile::before {
+    right: 30px;
+  }
 }
