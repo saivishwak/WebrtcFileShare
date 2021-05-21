@@ -239,7 +239,7 @@ function Room(props) {
       console.log("Files Length", file.length);
       for (var i = 0; i < file.length; i++) {
         console.log("file", file[i]);
-        if (file[i].size > 100 * 1024 * 1024) {
+        if (file[i].size > 20 * 1024 * 1024) {
           return alert("File size limit exceeded. Limit is 100 mb");
         }
         const dataId = uuid.v4();
