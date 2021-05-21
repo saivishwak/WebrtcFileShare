@@ -239,6 +239,9 @@ function Room(props) {
       console.log("Files Length", file.length);
       for (var i = 0; i < file.length; i++) {
         console.log("file", file[i]);
+        if (file[i].size > 100 * 1024 * 1024) {
+          return alert("File size limit exceeded. Limit is 100 mb");
+        }
         const dataId = uuid.v4();
         const metaData = JSON.stringify({ id: dataId, name: file[i].name, type: file[i].type, size: file[i].size });
         const metaObj = JSON.parse(metaData);
@@ -281,6 +284,7 @@ function Room(props) {
       metaData.current = JSON.parse(e.data.toString().substring(5, e.data.toString().length));
       console.log(metaData.current, "meta");
     } else {
+      console.log("recieving data");
       receiveBuffer.current.push(e.data);
     }
     //setMessages(messages => [...messages, {yours: false, value: e.data}]);
