@@ -256,6 +256,7 @@ function Room(props) {
           setRoomData((prev) => roomArr.current);
           db.rooms.update({ roomId: roomId }, { roomData: roomArr.current });
           worker.terminate();
+          setUserAdded(false);
           return;
         }
         if (typeof event.data == "string") {
@@ -263,6 +264,7 @@ function Room(props) {
             metaObj = JSON.parse(event.data.substring(5, event.data.length));
             setRoomData((prev) => [...prev, { id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Sending" }]);
             sendChannel.current.send(`Meta-${event.data.substring(5, event.data.length)}`);
+            setUserAdded(true);
           }
           //console.log(event.data);
         } else {
@@ -294,10 +296,12 @@ function Room(props) {
       // db.rooms.update({ roomId: roomId }, { roomData: roomArr.current });
       metaData.current = {};
       receiveBuffer.current = [];
+      setUserAdded(false);
       //setURL(() => URL.createObjectURL(file));
     } else if (e.data.toString().substring(0, 4) == "Meta") {
       metaData.current = JSON.parse(e.data.toString().substring(5, e.data.toString().length));
       setRoomData((prev) => [...prev, { id: metaData.current.id, fileName: metaData.current.name, fileSize: formatBytes(metaData.current.size), operation: "Receiving" }]);
+      setUserAdded(true);
       //console.log(metaData.current, "meta");
     } else {
       //console.log("recieving data");
