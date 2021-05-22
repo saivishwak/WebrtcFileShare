@@ -339,7 +339,7 @@ function Room(props) {
         ) : (
           <div className='roomQrCodeContainer'>
             <QRCode value={window.location.href} size={256} includeMargin={false} bgColor={"#c5c7cc"} />
-            <p>No one is in the room. Scan thi Qr Code or copy the link to start sharing 🚀</p>
+            <p>No one is in the room. Scan this Qr Code or copy the link to start sharing 🚀</p>
           </div>
         )}
       </div>
