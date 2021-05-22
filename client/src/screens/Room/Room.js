@@ -57,7 +57,7 @@ function Room(props) {
 
   useEffect(async () => {
     const socketUrl = "wss://p2p.bytebook.co:9000";
-    console.log("Socket URL : ", socketUrl);
+    //console.log("Socket URL : ", socketUrl);
     socketRef.current = io.connect(socketUrl);
     socketRef.current.emit("join room", {
       userName: user.userName,
@@ -65,7 +65,7 @@ function Room(props) {
     });
 
     socketRef.current.on("get socketID", (data) => {
-      console.log("get socketID", data);
+      //console.log("get socketID", data);
       setPeers((oldArray) => [
         {
           userName: data.userName,
@@ -76,14 +76,14 @@ function Room(props) {
 
     socketRef.current.on("user joined", (data) => {
       otherUser.current = data.socketID;
-      console.log("User Joined", data.socketID);
+      //console.log("User Joined", data.socketID);
       setPeers((oldArray) => [...oldArray, data]);
     });
 
     socketRef.current.on("other user", (data) => {
       callUser(data.socketID);
       otherUser.current = data.socketID;
-      console.log("Other user", data.socketID);
+      //console.log("Other user", data.socketID);
       setPeers((oldArray) => [...oldArray, data]);
     });
 
@@ -93,7 +93,7 @@ function Room(props) {
 
     socketRef.current.on("user left", (socketId) => {
       setPeers((oldArray) => oldArray.filter((data) => data.socketID !== socketId));
-      console.log("User left", socketId);
+      //console.log("User left", socketId);
     });
 
     socketRef.current.on("ice-candidate", handleNewICECandidateMsg);
@@ -115,7 +115,7 @@ function Room(props) {
 
   useEffect(() => {
     return () => {
-      console.log("componentWillUnmount");
+      //console.log("componentWillUnmount");
       if (socketRef.current) {
         socketRef.current.close();
       }
@@ -123,7 +123,7 @@ function Room(props) {
   }, []);
 
   useEffect(() => {
-    console.log(peers);
+    //console.log(peers);
     if (peers.length == 1) {
       setUserAdded(true);
     } else {
@@ -256,7 +256,7 @@ function Room(props) {
             setRoomData((prev) => [...prev, { id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Sending" }]);
             sendChannel.current.send(`Meta-${event.data.substring(5, event.data.length)}`);
           }
-          console.log(event.data);
+          //console.log(event.data);
         } else {
           // sendChannel.current.readyState
           if (sendChannel.current.readyState == "open") {
@@ -275,7 +275,7 @@ function Room(props) {
   function handleReceiveMessage(e) {
     if (e.data.toString().substring(0, 4) == "Done") {
       const file = new Blob(receiveBuffer.current);
-      console.log("file", file, "meta", metaData.current);
+      //console.log("file", file, "meta", metaData.current);
       download(file, metaData.current.name, metaData.current.type);
       const metaObj = metaData.current;
       roomArr.current.push({ id: metaObj.id, fileName: metaObj.name, fileSize: formatBytes(metaObj.size), operation: "Received" });
@@ -290,9 +290,9 @@ function Room(props) {
     } else if (e.data.toString().substring(0, 4) == "Meta") {
       metaData.current = JSON.parse(e.data.toString().substring(5, e.data.toString().length));
       setRoomData((prev) => [...prev, { id: metaData.current.id, fileName: metaData.current.name, fileSize: formatBytes(metaData.current.size), operation: "Receiving" }]);
-      console.log(metaData.current, "meta");
+      //console.log(metaData.current, "meta");
     } else {
-      console.log("recieving data");
+      //console.log("recieving data");
       receiveBuffer.current.push(e.data);
     }
     //setMessages(messages => [...messages, {yours: false, value: e.data}]);
