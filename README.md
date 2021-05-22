@@ -33,7 +33,7 @@ npm start
 ```
 The client built code is located in the `client/build` directory.
 
-**Starting the server **
+**Starting the server**
 ```bash
 npm run dev
 ```
