@@ -38,10 +38,10 @@ io.on("connection", (socket) => {
     const { roomID, userName } = data;
     if (rooms[roomID]) {
       const length = rooms[roomID].length;
-      // if (length === 2) {
-      //   socket.emit("room full");
-      //   return;
-      // }
+      if (length === 2) {
+        socket.emit("room full");
+        return;
+      }
       rooms[roomID].push({
         userName: userName,
         socketID: socket.id,

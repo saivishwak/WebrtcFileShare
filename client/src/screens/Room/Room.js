@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useContext, useState } from "react";
 import authApi from "../../context/index";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useHistory } from "react-router-dom";
 import "./Room.css";
 import db from "../../components/store/useIndexDB";
 
@@ -37,6 +37,7 @@ const useStyles = makeStyles({
 function Room(props) {
   const classes = useStyles();
   const Auth = useContext(authApi);
+  const history = useHistory();
   let { roomId } = useParams();
   let { roomName } = useParams();
   const [roomData, setRoomData] = useState([]);
@@ -57,7 +58,8 @@ function Room(props) {
   const [copyHandler, setcopyhandler] = useState(true);
 
   useEffect(async () => {
-    const socketUrl = "wss://p2p.bytebook.co:9000";
+    // const socketUrl = "wss://p2p.bytebook.co:9000";
+    const socketUrl = "ws://localhost:9000";
     //console.log("Socket URL : ", socketUrl);
     socketRef.current = io.connect(socketUrl);
     socketRef.current.emit("join room", {
@@ -86,6 +88,11 @@ function Room(props) {
       otherUser.current = data.socketID;
       //console.log("Other user", data.socketID);
       setPeers((oldArray) => [...oldArray, data]);
+    });
+
+    socketRef.current.on("room full", (data) => {
+      return alert("Room Full, Please use a different room!");
+      // return history.push("/");
     });
 
     socketRef.current.on("offer", handleOffer);
