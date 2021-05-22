@@ -2,13 +2,11 @@
 
 ![](https://img.shields.io/github/issues/saivishwak/WebrtcFileShare
 )
-![](https://img.shields.io/github/forks/saivishwak/WebrtcFileShare
+![](https://img.shields.io/github/issues/saivishwak/WebrtcFileShare
 )
 ![](https://img.shields.io/github/stars/saivishwak/WebrtcFileShare
 )
 ![](https://img.shields.io/github/license/saivishwak/WebrtcFileShare
-)
-![](https://img.shields.io/github/last-commit/saivishwak/WebrtcFileShare
 )
 
 Bytebook P2P is a file sharing web app that allows **users to transfer files between multiple devices.**
