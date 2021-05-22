@@ -26,6 +26,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import "boxicons";
 import Worker from "../../utils/web.worker";
+var QRCode = require("qrcode.react");
 
 const useStyles = makeStyles({
   table: {
@@ -333,7 +334,14 @@ function Room(props) {
       </div>
       <div className='roomMiddleContainer'>
         <div className='roomMiddleContainerAvatars'>{avatarItem}</div>
-        {peers.length > 1 ? "" : <p>No one is in the room. Share your url to start</p>}
+        {peers.length > 1 ? (
+          ""
+        ) : (
+          <div className='roomQrCodeContainer'>
+            <QRCode value={window.location.href} size={256} includeMargin={false} bgColor={"#c5c7cc"} />
+            <p>No one is in the room. Scan thi Qr Code or copy the link to start sharing 🚀</p>
+          </div>
+        )}
       </div>
       <div className='roomBottomContainer'>
         <TableContainer component={Paper}>
