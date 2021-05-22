@@ -6,8 +6,6 @@
 )
 ![](https://img.shields.io/github/stars/saivishwak/WebrtcFileShare
 )
-![](https://img.shields.io/github/license/saivishwak/WebrtcFileShare
-)
 
 Bytebook P2P is a file sharing web app that allows **users to transfer files between multiple devices.**
 It uses WebRTC peer-peer connections to share file between users and socket for initial handsake. The app also has web workers to remove the load on client for large data transfers and IndexDB to store files meta data. Your files are not transfered through any central server so you have more privacy.
